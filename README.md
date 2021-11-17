@@ -1,9 +1,8 @@
 ### Get started !
 
 - Installe nodejs
-- Lance `node main.js numéro_loyalty_card_id numeroUser`
+- Lance `node main.js numéro_loyalty_card_id numero_user_id`
 - Exemple : `node main.js 1 5`
-- Lance `node main.rb --loyalty_card_id=1 --user_id=5`
 
 ### The challenge
 
@@ -12,11 +11,24 @@ On a des donnée d'utilisateurs avec leurs cartes de fidélités associé :
 Les utilisateurs peuvent posséder des cartes de fidélité.
 Les utilisateurs peuvent gagner des récompenses (points) pour une carte donnée.
 
-Il y a déjà quelques données à ta disposition (voir `input.json`) et un programme (voir `main.rb`)
+Les données sont à disposition (voir `input.json`) et un programme
 
-Le problème est que... la commande `ruby main.rb --loyalty_card_id=1 --user_id=5` renvoie toujours la même valeur !!
+```javascript
+{
+    "user": {
+        "id": 5,
+        "total_points": 78,
+        "loyalty_cards": [
+            { "id": 1, "points": 12, "name": "Carrefour" },
+            { "id": 3, "points": 66, "name": "MacDo" }
+        ]
+    },
+    "loyalty_card": { "id": 1, "name": "Carrefour", "total_points": 56 }
+}
 
-Ecrit du code qui reproduit la sortie de la commande, mais qui fonctionne en réalité avec les données `input.json`.
+```
+
+L'objectif est de proposer du code qui reproduit la sortie de la commande, mais qui fonctionne en réalité avec les données `input.json`.
 
 ### Que faire ?
 

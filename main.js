@@ -95,7 +95,7 @@ const getUser = (id) => {
     return user;
   } else {
     console.log(
-      "Cet utilisateur n'existe pas. Essayez d'entrer un autre numéro. Le format attendu est un chiffre. Par exemple : 5",
+      "Cet utilisateur n'existe pas. Essayez d'entrer un autre numéro. Par exemple : 5",
     );
   }
 };
@@ -124,7 +124,7 @@ const getCardsInfoById = (cardId) => {
     return cardSelected;
   } else {
     return console.log(
-      `Ce numéro de carte n'existe pas. Veuillez entrer un chiffre entre 1 et ${data.loyalty_cards.length}. Par exemple 2`,
+      `Ce numéro de carte n'existe pas. Veuillez entrer un chiffre entre 1 et ${data.loyalty_cards.length}. Par exemple 2.`,
     );
   }
 };
@@ -137,8 +137,21 @@ const getCardsInfoById = (cardId) => {
  */
 const getResult = (inputCardId, inputUserId) => {
   {
-    getUser(inputUserId);
-    getCardsInfoById(inputCardId);
+    if (!isNaN(inputUserId)) {
+      getUser(inputUserId);
+    } else {
+      console.log(
+        "L'id entré pour l'utilisateur est incorrect. Le format attendu pour l'id est un chiffre. Ressayez avec un nombre. Par exemple 5.",
+      );
+    }
+
+    if (!isNaN(inputCardId)) {
+      getCardsInfoById(inputCardId);
+    } else {
+      console.log(
+        `L'id entré pour la carte de fidélité est incorrect. Le format attendu est est un chiffre. Veuillez entrer un chiffre entre 1 et ${data.loyalty_cards.length}. Par exemple 2.`,
+      );
+    }
   }
 };
 
