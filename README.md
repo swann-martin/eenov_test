@@ -6,12 +6,12 @@
 
 ### The challenge
 
-On a des donnée d'utilisateurs avec leurs cartes de fidélités associé :
+On a des donnée d'utilisateurs avec leurs cartes de fidélités associées :
 
 Les utilisateurs peuvent posséder des cartes de fidélité.
 Les utilisateurs peuvent gagner des récompenses (points) pour une carte donnée.
 
-Les données sont à disposition (voir `input.json`) et un programme
+Les données à disposition sont (voir `input.json`) et le résultat du programme
 
 ```javascript
 {
@@ -28,7 +28,7 @@ Les données sont à disposition (voir `input.json`) et un programme
 
 ```
 
-L'objectif est de proposer du code qui reproduit la sortie de la commande, mais qui fonctionne en réalité avec les données `input.json`.
+L'objectif est de proposer du code qui reproduit la sortie de la commande, mais qui fonctionne avec les données `input.json`.
 
 ### Que faire ?
 
