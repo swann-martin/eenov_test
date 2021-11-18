@@ -1,6 +1,6 @@
-// recupération des données du fichier json
+// Gets data from json file
 const data = require('./input.json');
-// recupération des arguments passés en ligne de commande
+// Gets the arguments enterred by the user
 const args = process.argv;
 const loyaltyCardId = parseInt(args[2]);
 const userId = parseInt(args[3]);
@@ -133,7 +133,7 @@ const getCardsInfoById = (cardId, dataUsers, dataCards) => {
 };
 
 /**
- * Provide the info about a User and a Loyalty card, searched by id
+ * Provides the info about a User and a Loyalty card, searched by id
  * @param {Number} inputCardId The id of the Loyalty Card searched, it is the argument given when the programme is launched.
  * @param {Number} inputUserId The id of the User searched, it is the argument given when the programme is launched.
  * @returns {Object} the User info (id (number), total_points(number), loyalty_cards(array of objects)) correponding to the id was inputed and the Loyalty Card details (id, name, total_points).
