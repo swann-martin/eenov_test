@@ -8,67 +8,68 @@ const userId = parseInt(args[3]);
 /**
  * Gets the users info from data.rewards filtered by id of the user
  * @param  {Number} id The id number of the user whose info we want
- * @return {Array}         The data.rewards filtered with only infos about the user
+ * @param {Array}   dataUsers The data.rewards filtered with only infos about the user
  * @return {String}        An error message in console
  */
-const getUserInfoById = (id) => {
-  if (data.rewards.find((entry) => entry.user_id === id)) {
-    return data.rewards.filter((line) => line.user_id === id);
+const getUserInfoById = (id, dataUsers) => {
+  if (dataUsers.find((entry) => entry.user_id === id)) {
+    let dataUser = dataUsers.filter((line) => line.user_id === id);
+    return dataUser;
   }
 };
 
 /**
  * Gets the total of points for all cards of the selected user
- * @param {Array} userInfoArray Array containing the user's informations
+ * @param {Array} dataUser Array containing the user's informations
  * @property {Number} total indicates the total of points for all cards of a selected user
  * @returns {Number} total of points for all the cards of a user
  */
-const getTotalPointsAllCards = (userInfoArray) => {
+const getTotalPointsAllCards = (dataUser) => {
   let total = 0;
-  userInfoArray &&
-    userInfoArray.forEach((user) => {
+  dataUser &&
+    dataUser.forEach((user) => {
       total += user.points;
     });
-
-  return total;
+  if (!isNaN(total)) return total;
+  return console.log('getTotaltPointsAllCards error : total is not a number');
 };
 
 /**
  * Searches the points for doubles of cards whith a same id and returns the sum
- * @param {Array} arrayToSearch Array containing the loyalty card's informations
- * @param {id} id Array containing the loyalty card's informations
+ * @param {Array} dataUser Array containing the user's loyalty card's informations
+ * @param {Number} id id of the card we want to search
  * @return {Number} total indicates the total of points for the card with this id
  */
-const getPointsPerCardById = (arrayToSearch, id) => {
+const getPointsPerCardById = (id, dataUser) => {
   let total = 0;
-  if (arrayToSearch) {
-    let array = arrayToSearch.filter((card) => card.loyalty_card_id === id);
+  if (dataUser) {
+    let array = dataUser.filter((card) => card.loyalty_card_id === id);
     array.forEach((value) => (total += value.points));
   }
   return total;
 };
 
-// récupère les cartes que possède l'utilisateur
 /**
- * Searches for the cards the user has and returns an array of objects sum
- * @param {Array} arrayToSearch Array containing the loyalty card's informations
- * @return {Number} total indicates the total of points for the card with this id
+ * Searches for the cards the user has and returns an array of objects with the user's cards data
+ * @param {Array} dataUser containing the searched user loyalty card's informations
+ * @param {Array} dataCards containing all loyalty cards informations
+ * @return {Array} loyalty_cardsArray
  */
-const getUsersLoyaltyCards = (arrayToSearch) => {
+const getUsersLoyaltyCards = (dataUser, dataCards) => {
   let loyalty_cardsArray = [];
   let arrayOfCards = [];
   //creates an array of loyalty cards
-  arrayToSearch.map((card) => {
+  dataUser.map((card) => {
     arrayOfCards.push(card.loyalty_card_id);
   });
   //creates from the arrayOfCards a unique array without doubles of loyalty cards id
   let unique = [...new Set(arrayOfCards)];
   // for each loyalty card with a unique id we create an object with containing the card's id, total of points and name
   unique.forEach((key) => {
-    let nameObject = data.loyalty_cards.find((value) => value.id === key);
+    let nameObject = dataCards.find((value) => value.id === key);
     let object = {
       id: key,
-      points: getPointsPerCardById(arrayToSearch, key),
+      points: getPointsPerCardById(key, dataUser),
       name: nameObject.name,
     };
     loyalty_cardsArray.push(object);
@@ -84,12 +85,12 @@ const getUsersLoyaltyCards = (arrayToSearch) => {
  * @returns {Object} Users information
  */
 const getUser = (id) => {
-  let userSearched = getUserInfoById(id);
+  let userSearched = getUserInfoById(id, data.rewards);
   if (userSearched && userSearched.length !== 0) {
     const user = {
       id: userSearched[0].user_id,
       total_points: getTotalPointsAllCards(userSearched),
-      loyalty_cards: getUsersLoyaltyCards(userSearched),
+      loyalty_cards: getUsersLoyaltyCards(userSearched, data.loyalty_cards),
     };
     console.log('user:', user);
     return user;
@@ -103,19 +104,21 @@ const getUser = (id) => {
 /**
  * Gets the information of a specific card by its id and return its info + the total of points for this card
  * @param  {Number} cardId The id of the loyalty card we look for
+ * @param  {Array} dataUsers The array containing the users data to search in
+ * @param  {Array} dataCards The array containing the cards data to search in
  * @return {Array}
  */
-const getCardsInfoById = (cardId) => {
+const getCardsInfoById = (cardId, dataUsers, dataCards) => {
   let totalPoints = 0;
   let cardSelected = [];
   //creates an array of loyalty_cards with all the cards which have the id we look
-  const arrayOfCardsById = data.rewards.filter(
+  const arrayOfCardsById = dataUsers.filter(
     (line) => line.loyalty_card_id === cardId,
   );
   //creates an array of loyalty_cards with all the cards which have the id we look
   if (arrayOfCardsById && arrayOfCardsById.length !== 0) {
     arrayOfCardsById.forEach((element) => (totalPoints += element.points));
-    data.loyalty_cards.map((card) => {
+    dataCards.map((card) => {
       if (card.id === cardId) {
         cardSelected = { ...card, total_points: totalPoints };
       }
@@ -124,7 +127,7 @@ const getCardsInfoById = (cardId) => {
     return cardSelected;
   } else {
     return console.log(
-      `Ce numéro de carte n'existe pas. Veuillez entrer un chiffre entre 1 et ${data.loyalty_cards.length}. Par exemple 2.`,
+      `Ce numéro de carte n'existe pas. Veuillez entrer un chiffre entre 1 et ${dataCards.length}. Par exemple 2.`,
     );
   }
 };
@@ -146,7 +149,7 @@ const getResult = (inputCardId, inputUserId) => {
     }
 
     if (!isNaN(inputCardId)) {
-      getCardsInfoById(inputCardId);
+      getCardsInfoById(inputCardId, data.rewards, data.loyalty_cards);
     } else {
       console.log(
         `L'id entré pour la carte de fidélité est incorrect. Le format attendu est est un chiffre. Veuillez entrer un chiffre entre 1 et ${data.loyalty_cards.length}. Par exemple 2.`,

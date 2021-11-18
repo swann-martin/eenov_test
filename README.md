@@ -2,7 +2,7 @@
 
 - Installe nodejs
 - Lance `node main.js numéro_loyalty_card_id numero_user_id`
-- Exemple : `node main.js 1 5`
+- Exemple : `node main.js 2 5`
 
 ### The challenge
 
